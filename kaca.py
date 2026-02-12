@@ -19,3 +19,33 @@
 #naredi megre obeh branchov 
 
 import pygame
+
+pygame.init()
+
+canvas = pygame.display.set_mode((1000, 1000))
+
+pygame.display.set_caption("kaca")
+kvadrat = pygame.Rect(30, 30, 50, 50)
+
+barva1 = (39, 150, 11)
+barva2 = (50, 199, 12)
+velikost = 50
+
+exit = False
+while not exit:
+	canvas.fill((0, 0, 0))
+
+	for x in range(0, 1000, velikost):
+		for y in range (0, 1000, velikost):
+			if(x//velikost + y//velikost)%2 == 0 :
+				pygame.draw.rect(canvas, barva1, (x, y, velikost, velikost))
+			else:
+				pygame.draw.rect(canvas, barva2, (x, y, velikost, velikost))
+
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			exit = True
+
+	pygame.draw.rect(canvas, (200, 0, 0), kvadrat)
+
+	pygame.display.update()
