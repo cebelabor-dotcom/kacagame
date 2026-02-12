@@ -22,29 +22,72 @@ import pygame
 
 pygame.init()
 
-canvas = pygame.display.set_mode((1000, 1000))
+game_over = False
 
+canvas = pygame.display.set_mode((1000, 1000))
+x = 50
+y = 50
 pygame.display.set_caption("kaca")
-kvadrat = pygame.Rect(30, 30, 50, 50)
+kvadrat = pygame.Rect(x, y, 50, 50)
 
 barva1 = (39, 150, 11)
 barva2 = (50, 199, 12)
 velikost = 50
 
+smer = "right"
+
+clock = pygame.time.Clock()
+
 exit = False
 while not exit:
+	clock.tick(5)
+
 	canvas.fill((0, 0, 0))
 
-	for x in range(0, 1000, velikost):
-		for y in range (0, 1000, velikost):
-			if(x//velikost + y//velikost)%2 == 0 :
-				pygame.draw.rect(canvas, barva1, (x, y, velikost, velikost))
+	for a in range(0, 1000, velikost):
+		for b in range (0, 1000, velikost):
+			if(a//velikost + b//velikost)%2 == 0 :
+				pygame.draw.rect(canvas, barva1, (a, b, velikost, velikost))
 			else:
-				pygame.draw.rect(canvas, barva2, (x, y, velikost, velikost))
+				pygame.draw.rect(canvas, barva2, (a, b, velikost, velikost))
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			exit = True
+
+	
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_a and smer != "right":
+				smer = "left"
+			elif event.key == pygame.K_d and smer != "left":
+				smer = "right"
+			elif event.key == pygame.K_w and smer != "down":
+				smer = "up"
+			elif event.key == pygame.K_s and smer != "up":
+				smer = "down"
+
+	if smer == "right":
+		x += 50
+	elif smer == "left":
+		x -= 50
+	elif smer == "up":
+		y -= 50
+	elif smer == "down":
+		y += 50
+
+	kvadrat = pygame.Rect(x, y, 50, 50)
+
+	if not (x >= 0 and x<= 1000):
+		game_over = True
+	elif not (y >= 0 and y<= 1000):
+		game_over = True
+
+	while game_over:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				exit = True
+				game_over = False
+
 
 	pygame.draw.rect(canvas, (200, 0, 0), kvadrat)
 
