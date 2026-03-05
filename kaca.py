@@ -39,7 +39,7 @@ smer = "right"
 
 dolzina_kaca = 1
 
-barve = ((30, 17, 184), (240, 193, 53), (56, 14, 52), (232, 46, 214))
+barve = ((30, 17, 184), (255, 255, 0), (56, 14, 52), (232, 46, 214))
 
 clock = pygame.time.Clock()
 
@@ -65,17 +65,17 @@ while not exit:
 
 	for a in range(3):
 		if stev_sadje != 3:
-			sadje_x = random.randint(0, 20)*50
-			sadje_y = random.randint(0, 20)*50
+			sadje_x = random.randint(0, 19)*50
+			sadje_y = random.randint(0, 19)*50
 			nou = True
 			if sadje_x in sadje and sadje_y in sadje:
 				sadje.append((sadje_x, sadje_y, random.choice(barve)))
 			else:
 				while nou:
-					sadje_x = random.randint(0, 20)*50
-					sadje_y = random.randint(0, 20)*50
-					if sadje_x in sadje and sadje_y in sadje:
-						sadje.append((sadje_x, sadje_y, random.choice(barve)))
+					sadje_x = random.randint(0, 19)*50
+					sadje_y = random.randint(0, 19)*50
+					if sadje_x not in sadje and sadje_y not in sadje:
+						sadje.append([sadje_x, sadje_y, random.choice(barve)])
 						nou = False
 
 			stev_sadje += 1
@@ -112,13 +112,25 @@ while not exit:
 	elif smer == "down":
 		y += 50
 
-
 	kvadrat = pygame.Rect(x, y, 50, 50)
 
 	if not (x >= 0 and x<= 1000):
 		game_over = True
 	elif not (y >= 0 and y<= 1000):
 		game_over = True
+
+	for n in range(len(sadje)):
+		if x == sadje[n][0]:
+			if y == sadje [n][1]:
+				sadje.pop(n)
+				nou = True
+				while nou:
+					sadje_x = random.randint(0, 19)*50
+					sadje_y = random.randint(0, 19)*50
+					if sadje_x not in sadje and sadje_y not in sadje and (sadje_x != x or sadje_y != y):
+						sadje.append([sadje_x, sadje_y, random.choice(barve)])
+						nou = False
+
 
 	while game_over:
 		for event in pygame.event.get():
